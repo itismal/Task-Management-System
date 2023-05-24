@@ -1,0 +1,15 @@
+D:\CAB301\A3\A3_ADT\bin\Debug\net6.0\A3_ADT.exe
+D:\CAB301\A3\A3_ADT\bin\Debug\net6.0\A3_ADT.deps.json
+D:\CAB301\A3\A3_ADT\bin\Debug\net6.0\A3_ADT.runtimeconfig.json
+D:\CAB301\A3\A3_ADT\bin\Debug\net6.0\A3_ADT.dll
+D:\CAB301\A3\A3_ADT\bin\Debug\net6.0\A3_ADT.pdb
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.csproj.AssemblyReference.cache
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.GeneratedMSBuildEditorConfig.editorconfig
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.AssemblyInfoInputs.cache
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.AssemblyInfo.cs
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.csproj.CoreCompileInputs.cache
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.dll
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\refint\A3_ADT.dll
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.pdb
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\A3_ADT.genruntimeconfig.cache
+D:\CAB301\A3\A3_ADT\obj\Debug\net6.0\ref\A3_ADT.dll
