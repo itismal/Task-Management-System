@@ -10,9 +10,17 @@ namespace A3_ADT
 
         public FileParser(string fileName)
         {
-            if (!File.Exists(fileName))
+            string solutionFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+            string filePath = Path.Combine(solutionFolder, fileName);
+
+            if (!Path.HasExtension(filePath))
             {
-                using (StreamWriter fileWriter = File.CreateText(fileName))
+                filePath += ".txt";
+            }
+
+            if (!File.Exists(filePath))
+            {
+                using (StreamWriter fileWriter = File.CreateText(filePath))
                 {
                     Console.WriteLine($"File '{fileName} created as it did not exist.'");
                 }
@@ -20,7 +28,7 @@ namespace A3_ADT
 
             ParsedData = new List<string>();
 
-            string[] fileContent = File.ReadAllLines(fileName);
+            string[] fileContent = File.ReadAllLines(filePath);
 
             for (int i = 0; i < fileContent.Length; i++)
             {

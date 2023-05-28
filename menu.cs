@@ -31,7 +31,29 @@ namespace A3_ADT
                 switch (userInput)
                 {
                     case "1":
-                        Console.WriteLine("Option 1 selected");
+                        Console.WriteLine("Loading tasks from the file");
+
+                        //get the file name from user
+                        Console.WriteLine("Enter the file name: ");
+                        string fileName =  Console.ReadLine();
+
+                        //instantiate FileParser class to load the file
+                        FileParser fileParser = new FileParser(fileName);
+
+                        if (fileParser.ParsedData.Count > 0)
+                        {
+                            Console.WriteLine("Tasks loaded successfully.");
+
+                            foreach (string line in fileParser.ParsedData)
+                            {
+                                Console.WriteLine(line);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: The file is empty or invalid.");
+                        }
+
                         break;
 
                     case "2":
