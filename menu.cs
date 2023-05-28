@@ -37,6 +37,7 @@ namespace A3_ADT
                         Console.WriteLine("Enter the file name: ");
                         string fileName =  Console.ReadLine();
 
+                        Console.WriteLine();
                         //instantiate FileParser class to load the file
                         FileParser fileParser = new FileParser(fileName);
 

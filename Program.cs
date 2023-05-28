@@ -1,4 +1,6 @@
-﻿namespace A3_ADT
+﻿using System;
+
+namespace A3_ADT
 {
     internal class Program
     {
