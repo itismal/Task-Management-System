@@ -121,7 +121,7 @@ namespace A3_ADT
                         }
 
                     case "5":
-                        Console.WriteLine("Option 5 selected");
+                        taskList.DisplayTasks();
                         break;
 
                     case "6":
