@@ -2,7 +2,7 @@
 
 namespace A3_ADT
 {
-    class Menu
+    public class Menu
     {
         public void DisplayMenu()
         {
