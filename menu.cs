@@ -4,11 +4,11 @@ namespace A3_ADT
 {
     public class Menu
     {
-        private TaskList taskList;
+        private TaskManagement taskManagement;
 
         public Menu()
         {
-            taskList = new TaskList();
+            taskManagement = new TaskManagement();
         }
 
         public void DisplayMenu()
@@ -59,7 +59,22 @@ namespace A3_ADT
 
                             foreach (string line in fileParser.ParsedData)
                             {
-                                Console.WriteLine(line);
+                                //Console.WriteLine(line);
+                                string[] taskParts = line.Split(',');
+                                string taskID = taskParts[0].Trim();
+                                int timeNeeded = int.Parse(taskParts[1].Trim());
+
+                                List<string> dependencies = new List<string>();
+
+                                if (taskParts.Length > 2)
+                                {
+                                    for (int i = 2; i < taskParts.Length; i++)
+                                    {
+                                        dependencies.Add(taskParts[i].Trim());
+                                    }
+                                }
+
+                                taskManagement.AddTask(taskID, timeNeeded, dependencies);
                             }
                         }
                         else
@@ -75,7 +90,22 @@ namespace A3_ADT
                         //validate the format
                         if (TaskValidator.ValidateLine(task))
                         {
-                            taskList.AddTask(task);
+                            string[] taskParts = task.Split(',');
+                            string taskID = taskParts[0].Trim();
+                            int timeNeeded = int.Parse(taskParts[1].Trim());
+
+                            List<string> dependencies = new List<string>();
+
+                            if (taskParts.Length > 2)
+                            {
+                                for (int i = 2; i < taskParts.Length; i++)
+                                {
+                                    dependencies.Add(taskParts[i].Trim());
+                                }
+                            }
+                            
+
+                            taskManagement.AddTask(taskID, timeNeeded, dependencies);
                         }
                         else
                         {
@@ -85,24 +115,22 @@ namespace A3_ADT
 
                     case "3":
                         Console.WriteLine("Enter new taskID to be removed: ");
-                        string taskID = Console.ReadLine();
+                        string tID1 = Console.ReadLine();
 
-                        if (string.IsNullOrEmpty(taskID))
+                        if (string.IsNullOrEmpty(tID1))
                         {
-                            Console.WriteLine("Invalid task ID.");
-                            break;
+                            Console.WriteLine("Invalid task ID."); break;
                         }
                         else
                         {
-                            taskList.RemoveTask(taskID);
-                            break;
+                            taskManagement.RemoveTask(tID1); break;
                         }
 
                     case "4":
                         Console.WriteLine("Enter taskID: ");
-                        string tID = Console.ReadLine();
+                        string tID2 = Console.ReadLine();
 
-                        if (string.IsNullOrEmpty(tID))
+                        if (string.IsNullOrEmpty(tID2))
                         {
                             Console.WriteLine("Invalid task ID."); break;
                         }
@@ -113,7 +141,7 @@ namespace A3_ADT
 
                         if (isNum)
                         {
-                            taskList.UpdateTimeCompletion(tID, newTime); break;
+                            taskManagement.UpdateTimeCompletion(tID2, newTime); break;
                         }
                         else
                         {
@@ -121,7 +149,7 @@ namespace A3_ADT
                         }
 
                     case "5":
-                        taskList.DisplayTasks();
+                        taskManagement.DisplayTasks();
                         break;
 
                     case "6":

@@ -1,42 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace A3_ADT
 {
     public class TaskManagement
     {
-        private List<string> centralizedList;
         private Dictionary<string, TaskInfo> taskDict;
+        private List<string> taskOrder;
 
-        public TaskManagement (List<string> centralizedList)
+        public TaskManagement ()
         {
-            this.centralizedList = centralizedList;
             taskDict = new Dictionary<string, TaskInfo> ();
-        }
-
-        public void ConvertTaskToObjects()
-        {
-            foreach (string taskString in centralizedList)
-            {
-                string[] taskParts = taskString.Split (',');
-
-                string taskID = taskParts[0].Trim ();
-                int timeNeeded = int.Parse(taskParts[1].Trim());
-                
-                List<string> dependencies = new List<string> ();
-                if (taskParts.Length > 2)
-                {
-                    for (int i = 0; i < taskParts.Length; i++)
-                    {
-                        dependencies.Add(taskParts[i].Trim ());
-                    }
-                }
-
-                TaskInfo taskInfo = new TaskInfo (taskID, timeNeeded, dependencies);
-                taskDict.Add (taskID, taskInfo);
-            }
+            taskOrder = new List<string> ();
         }
 
         public void AddTask (string taskID, int timeNeeded, List<string> dependencies)
@@ -49,6 +25,7 @@ namespace A3_ADT
             {
                 TaskInfo taskInfo = new TaskInfo(taskID, timeNeeded, dependencies);
                 taskDict.Add(taskID, taskInfo);
+                taskOrder.Add(taskID);
                 Console.WriteLine($"Task '{taskID}' added successfully.");
             }
         }
@@ -58,6 +35,7 @@ namespace A3_ADT
             if (taskDict.ContainsKey(taskID))
             {
                 taskDict.Remove(taskID);
+                taskOrder.Remove(taskID);
                 Console.WriteLine($"Task '{taskID}' removed successfully.");
             }
             else { Console.WriteLine($"Task '{taskID}' was not found."); }
@@ -73,5 +51,24 @@ namespace A3_ADT
             }
             else { Console.WriteLine($"Task '{taskID}' was not found."); }
         }
+
+        public void DisplayTasks ()
+        {
+            Console.WriteLine("Current tasks in the list: ");
+
+            if (taskDict.Count == 0)
+            {
+                Console.WriteLine("No tasks found.");
+            }
+            else
+            {
+                foreach (TaskInfo taskInfo in taskDict.Values)
+                {
+                    Console.WriteLine(taskInfo);
+                }
+            }            
+        }
+
+
     }
 }

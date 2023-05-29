@@ -21,5 +21,10 @@ namespace A3_ADT
         {
             TimeNeeded = timeNeeded;
         }
+
+        public override string ToString()
+        {
+            return $"TaskID: {TaskID}, Time Needed: {TimeNeeded}, Dependencies: {string.Join(", ", Dependencies)}";
+        }
     }
 }
