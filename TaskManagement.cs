@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace A3_ADT
 {
@@ -35,9 +36,42 @@ namespace A3_ADT
 
                 TaskInfo taskInfo = new TaskInfo (taskID, timeNeeded, dependencies);
                 taskDict.Add (taskID, taskInfo);
-
-
             }
+        }
+
+        public void AddTask (string taskID, int timeNeeded, List<string> dependencies)
+        {
+            if (taskDict.ContainsKey(taskID))
+            {
+                Console.WriteLine($"Task '{taskID}' already exists.");
+            }
+            else
+            {
+                TaskInfo taskInfo = new TaskInfo(taskID, timeNeeded, dependencies);
+                taskDict.Add(taskID, taskInfo);
+                Console.WriteLine($"Task '{taskID}' added successfully.");
+            }
+        }
+
+        public void RemoveTask (string taskID)
+        {
+            if (taskDict.ContainsKey(taskID))
+            {
+                taskDict.Remove(taskID);
+                Console.WriteLine($"Task '{taskID}' removed successfully.");
+            }
+            else { Console.WriteLine($"Task '{taskID}' was not found."); }
+        }
+
+        public void UpdateTimeCompletion(string taskID, int newTime)
+        {
+            if (taskDict.ContainsKey(taskID))
+            {
+                TaskInfo taskinfo = taskDict[taskID];
+                taskinfo.UpdateTimeNeeded(newTime);
+                Console.WriteLine($"New time for task '{taskID}' updated.");
+            }
+            else { Console.WriteLine($"Task '{taskID}' was not found."); }
         }
     }
 }
