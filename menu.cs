@@ -161,7 +161,7 @@ namespace A3_ADT
                         break;
 
                     case "8":
-                        Console.WriteLine("Option 8 selected");
+                        taskManagement.CalculateCommenceTimes();
                         break;
 
                     case "9":
