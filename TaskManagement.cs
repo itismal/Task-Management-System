@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace A3_ADT
 {
@@ -18,6 +19,8 @@ namespace A3_ADT
         //dictionary to store task object and its dependencies completion time/s
         private Dictionary<TaskInfo, List<int>> dependencyProcessTimes;
 
+        private List<string> sequence;
+
         //instantiate dictionaries on instantiation
         public TaskManagement ()
         {
@@ -27,7 +30,6 @@ namespace A3_ADT
             dependencyProcessTimes = new Dictionary<TaskInfo, List<int>>();
         }
 
-        //add a task
         public void AddTask (string taskID, int timeNeeded, List<string> dependencies)
         {
             if (taskDict.ContainsKey(taskID))
@@ -42,7 +44,6 @@ namespace A3_ADT
             }
         }
 
-        //remove a task
         public void RemoveTask (string taskID)
         {
             if (taskDict.ContainsKey(taskID))
@@ -53,7 +54,6 @@ namespace A3_ADT
             else { Console.WriteLine($"Task '{taskID}' was not found."); }
         }
 
-        //update completion time of a task
         public void UpdateTimeCompletion(string taskID, int newTime)
         {
             if (taskDict.ContainsKey(taskID))
@@ -65,7 +65,6 @@ namespace A3_ADT
             else { Console.WriteLine($"Task '{taskID}' was not found."); }
         }
 
-        //display loaded tasks
         public void DisplayTasks ()
         {
             if (taskDict.Count == 0)
@@ -83,7 +82,6 @@ namespace A3_ADT
             }
         }
 
-        //calculate commence times
         public void CalculateCommenceTimes()
         {
             //clear the dictionaries if previously used for effective memory usage
@@ -112,11 +110,25 @@ namespace A3_ADT
             }
 
             //display earliest commence times
-            Console.WriteLine();
-            foreach (TaskInfo taskInfo in taskDict.Values)
+            //Console.WriteLine();
+            //foreach (TaskInfo taskInfo in taskDict.Values)
+            //{
+            //    Console.WriteLine($"Task '{taskInfo.TaskID}': {commenceTimes[taskInfo]}");
+            //}
+
+            string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+            string filePath = Path.Combine(fileFolder, "EarliestTimes.txt");
+
+            using (StreamWriter writer = new StreamWriter(filePath, false))
             {
-                Console.WriteLine($"Task '{taskInfo.TaskID}': {commenceTimes[taskInfo]}");
+                foreach (TaskInfo taskInfo in taskDict.Values)
+                {
+                    writer.WriteLine(taskInfo.TaskID + ", " +commenceTimes[taskInfo]);
+                }
             }
+            Console.WriteLine();
+            Console.WriteLine("Earliest Commence Times saved to EarliestTimes.txt\n" +
+                $"Location: {filePath}");
         }
 
         //testing purposes - counter for KeyValuePair in recursiveDFS
@@ -178,6 +190,36 @@ namespace A3_ADT
                 commenceTimes[task] = dependencyProcessTimes[task].Max();
                 isCalculated[task] = true;
             }
+        }
+
+        public void GetSequence()
+        {
+            if (sequence == null)
+            {
+                CalculateCommenceTimes();
+                CalculateSeqeunce();
+            }
+
+            //display seqeunce
+            //Console.WriteLine();
+            //Console.WriteLine("Task Sequence: " + string.Join(", ", sequence));
+
+            string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+            string filePath = Path.Combine(fileFolder, "Sequence.txt");
+
+            using (StreamWriter writer = new StreamWriter(filePath, false))
+            {
+                writer.WriteLine(string.Join(", ", sequence));
+            }
+            Console.WriteLine();
+            Console.WriteLine("Earliest Commence Times saved to Sequence.txt\n" +
+                $"Location: {filePath}");
+        }
+
+        //calculate sequence by ordering taskID in ascending order of their corresponding earliest commence times
+        private void CalculateSeqeunce()
+        {
+            sequence = taskDict.Keys.OrderBy(taskID => commenceTimes[taskDict[taskID]]).ToList();
         }
     }
 }

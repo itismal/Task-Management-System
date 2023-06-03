@@ -169,19 +169,23 @@ namespace A3_ADT
                         Console.WriteLine("Option 6 selected");
                         break;
 
+                    //calculate sequence and save it in a file
                     case "7":
-                        Console.WriteLine("Option 7 selected");
+                        taskManagement.GetSequence();
                         break;
 
+                    //calculate earliest commence times and save it in a file
                     case "8":
                         taskManagement.CalculateCommenceTimes();
                         break;
 
+                    //exit the program
                     case "9":
                         Console.WriteLine("Exiting the program...");
                         exit = true;
                         break;
 
+                    //default message
                     default:
                         Console.WriteLine("Invalid choice. Please choose the number from the options.");
                             break;
