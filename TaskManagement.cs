@@ -90,16 +90,16 @@ namespace A3_ADT
                 RecursiveDFS(task);
             }
 
-            foreach (TaskInfo remTask in taskDict.Values)
-            {
-                if (remTask.Dependencies.Count != 0)
-                {
-                    if (remTask.Dependencies.Count != dependencyProcessTimes[remTask].Count)
-                    {
-                        RecursiveDFS(remTask);
-                    }
-                }
-            }
+            //foreach (TaskInfo remTask in taskDict.Values)
+            //{
+            //    if (remTask.Dependencies.Count != 0)
+            //    {
+            //        if (remTask.Dependencies.Count != dependencyProcessTimes[remTask].Count)
+            //        {
+            //            RecursiveDFS(remTask);
+            //        }
+            //    }
+            //}
 
             Console.WriteLine();
             foreach (TaskInfo taskInfo in taskDict.Values)
@@ -108,7 +108,7 @@ namespace A3_ADT
             }
         }
 
-        private int counter = 1;
+        //private int counter = 1;
 
         private void RecursiveDFS(TaskInfo task)
         {
@@ -129,14 +129,16 @@ namespace A3_ADT
                 {
                     TaskInfo dependencyTask = taskDict[dependency];
 
-                    if (isCalculated[dependencyTask])
-                    {
-                        dependencyProcessTimes[task].Add(commenceTimes[dependencyTask] + dependencyTask.TimeNeeded);
-                    }
-                    else
+                    if (!isCalculated[dependencyTask])
                     {
                         RecursiveDFS(dependencyTask);
                     }
+                }
+
+                foreach (string dependency in task.Dependencies)
+                {
+                    TaskInfo dependencyTask = taskDict[dependency];
+                    dependencyProcessTimes[task].Add(commenceTimes[dependencyTask] + dependencyTask.TimeNeeded);
                 }
 
                 //Console.WriteLine();
@@ -157,6 +159,8 @@ namespace A3_ADT
 
                 commenceTimes[task] = dependencyProcessTimes[task].Max();
                 isCalculated[task] = true;
+
+                //return;
             }
         }
     }
