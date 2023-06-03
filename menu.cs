@@ -51,114 +51,23 @@ namespace A3_ADT
 
                     //load tasks from file
                     case "1":
-                        Console.WriteLine("Loading tasks from the file...");
-
-                        //get the file name from user
-                        Console.WriteLine("Enter the file name: ");
-                        string fileName =  Console.ReadLine();
-
-                        Console.WriteLine();
-                        //instantiate FileParser class to load the file
-                        FileParser fileParser = new FileParser(fileName);
-
-                        //check for the task loading
-                        if (fileParser.ParsedData.Count > 0)
-                        {
-                            Console.WriteLine("Tasks loaded successfully.");
-
-                            //parse all the lines in the file
-                            foreach (string line in fileParser.ParsedData)
-                            {
-                                string[] taskParts = line.Split(',');
-                                string taskID = taskParts[0].Trim();
-                                int timeNeeded = int.Parse(taskParts[1].Trim());
-
-                                List<string> dependencies = new List<string>();
-
-                                if (taskParts.Length > 2)
-                                {
-                                    for (int i = 2; i < taskParts.Length; i++)
-                                    {
-                                        dependencies.Add(taskParts[i].Trim());
-                                    }
-                                }
-
-                                taskManagement.AddTask(taskID, timeNeeded, dependencies);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error: The file is empty or invalid.");
-                        }
+                        LoadTasksFromFile();
                         break;
 
                     //add a task
                     case "2":
-                        Console.WriteLine("Enter new task (ID, Time, Dependencies if any): ");
-                        string task = Console.ReadLine();
-
-                        //validate the format
-                        if (TaskValidator.ValidateLine(task))
-                        {
-                            string[] taskParts = task.Split(',');
-                            string taskID = taskParts[0].Trim();
-                            int timeNeeded = int.Parse(taskParts[1].Trim());
-
-                            List<string> dependencies = new List<string>();
-
-                            if (taskParts.Length > 2)
-                            {
-                                for (int i = 2; i < taskParts.Length; i++)
-                                {
-                                    dependencies.Add(taskParts[i].Trim());
-                                }
-                            }
-                            
-
-                            taskManagement.AddTask(taskID, timeNeeded, dependencies);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Invalid task format. Task '{task}' not added");
-                        }
+                        MenuAdd();
                         break;
 
                     //remove a task
                     case "3":
-                        Console.WriteLine("Enter new taskID to be removed: ");
-                        string tID1 = Console.ReadLine();
-
-                        if (string.IsNullOrEmpty(tID1))
-                        {
-                            Console.WriteLine("Invalid task ID."); break;
-                        }
-                        else
-                        {
-                            taskManagement.RemoveTask(tID1); break;
-                        }
+                        MenuRemove();
+                        break;
 
                     //update completion of a task
                     case "4":
-                        Console.WriteLine("Enter taskID: ");
-                        string tID2 = Console.ReadLine();
-
-                        if (string.IsNullOrEmpty(tID2))
-                        {
-                            Console.WriteLine("Invalid task ID."); break;
-                        }
-
-                        Console.WriteLine("Enter the new time: ");
-                        string input = Console.ReadLine();
-                        bool isNum = int.TryParse(input, out int newTime);
-
-                        if (isNum)
-                        {
-                            taskManagement.UpdateTimeCompletion(tID2, newTime); break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid time format."); break;
-                        }
+                        MenuUpdateTime();
+                        break;
 
                     //display loaded tasks
                     case "5":
@@ -166,7 +75,7 @@ namespace A3_ADT
                         break;
 
                     case "6":
-                        Console.WriteLine("Option 6 selected");
+                        MenuSaveTasks();                        
                         break;
 
                     //calculate sequence and save it in a file
@@ -246,6 +155,170 @@ namespace A3_ADT
 
             //Console.WriteLine("Press any key to return to menu...");
             //Console.ReadKey();
+        }
+
+        private void LoadTasksFromFile()
+        {
+            Console.WriteLine("Loading tasks from the file...");
+
+            //get the file name from user
+            Console.WriteLine("Enter the file name: ");
+            string fileName = Console.ReadLine();
+
+            Console.WriteLine();
+            //instantiate FileParser class to load the file
+            FileParser fileParser = new FileParser(fileName);
+
+            //check for the task loading
+            if (fileParser.ParsedData.Count > 0)
+            {
+                Console.WriteLine("Tasks loaded successfully.");
+
+                //parse all the lines in the file
+                foreach (string line in fileParser.ParsedData)
+                {
+                    string[] taskParts = line.Split(',');
+                    string taskID = taskParts[0].Trim();
+                    int timeNeeded = int.Parse(taskParts[1].Trim());
+
+                    List<string> dependencies = new List<string>();
+
+                    if (taskParts.Length > 2)
+                    {
+                        for (int i = 2; i < taskParts.Length; i++)
+                        {
+                            dependencies.Add(taskParts[i].Trim());
+                        }
+                    }
+
+                    taskManagement.AddTask(taskID, timeNeeded, dependencies);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error: The file is empty or invalid.");
+            }
+        }
+
+        private void MenuAdd()
+        {
+            Console.WriteLine("Enter new task (ID, Time, Dependencies if any): ");
+            string task = Console.ReadLine();
+
+            //validate the format
+            if (TaskValidator.ValidateLine(task))
+            {
+                string[] taskParts = task.Split(',');
+                string taskID = taskParts[0].Trim();
+                int timeNeeded = int.Parse(taskParts[1].Trim());
+
+                List<string> dependencies = new List<string>();
+
+                if (taskParts.Length > 2)
+                {
+                    for (int i = 2; i < taskParts.Length; i++)
+                    {
+                        dependencies.Add(taskParts[i].Trim());
+                    }
+                }
+                taskManagement.AddTask(taskID, timeNeeded, dependencies);
+            }
+            else
+            {
+                Console.WriteLine($"Invalid task format. Task '{task}' not added");
+            }
+        }
+
+        private void MenuRemove()
+        {
+            Console.WriteLine("Enter new taskID to be removed: ");
+            string taskID = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(taskID))
+            {
+                Console.WriteLine("Invalid task ID.");
+            }
+            else
+            {
+                taskManagement.RemoveTask(taskID);
+            }
+        }
+
+        private void MenuUpdateTime()
+        {
+            Console.WriteLine("Enter taskID: ");
+            string taskID = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(taskID))
+            {
+                Console.WriteLine("Invalid task ID.");
+            }
+
+            Console.WriteLine("Enter the new time: ");
+            string input = Console.ReadLine();
+            bool isNum = int.TryParse(input, out int newTime);
+
+            if (isNum)
+            {
+                taskManagement.UpdateTimeCompletion(taskID, newTime);
+            }
+            else
+            {
+                Console.WriteLine("Invalid time format.");
+            }
+        }
+
+        private void MenuSaveTasks()
+        {
+            Console.WriteLine("Saving tasks...");
+
+            //get the file name from user
+            Console.WriteLine("Enter the file name: ");
+            string fileName = Console.ReadLine();
+
+            string filePath = Path.Combine(fileFolder, $"{fileName}.txt");
+
+            //check for file's existence
+            if (File.Exists(filePath))
+            {
+                if (taskManagement.taskDict.Count == 0)
+                {
+                    Console.WriteLine("There are no tasks to save in memory.");
+                }
+                else
+                {
+                    //wipe file clean
+                    File.WriteAllText(filePath, string.Empty);
+
+                    List<string> taskData = new List<string>();
+
+                    //get task objects of each task stored in the memory
+                    foreach (TaskInfo taskInfo in taskManagement.taskDict.Values)
+                    {
+                        string taskID = taskInfo.TaskID;
+                        int timeNeeded = taskInfo.TimeNeeded;
+                        List<string> dependencies = taskInfo.Dependencies;
+
+                        //create string to save a task data in a line
+                        string taskInfoLine = $"{taskID}, {timeNeeded}";
+
+                        //check if the task has any dependencies
+                        if (dependencies.Count > 0)
+                        {
+                            string dependenciesString = string.Join(", ", dependencies);
+                            taskInfoLine += $", {dependenciesString}";
+                        }
+                        taskData.Add(taskInfoLine);
+                    }
+
+                    File.WriteAllLines(filePath, taskData);
+                    Console.WriteLine($"Tasks saved in file '{fileName}'.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"File '{fileName}' does not exist. Nothing is saved.");
+            }
         }
     }
 }

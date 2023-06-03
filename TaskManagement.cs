@@ -8,7 +8,7 @@ namespace A3_ADT
     public class TaskManagement
     {
         //dictionary to store task and its object info
-        private Dictionary<string, TaskInfo> taskDict;
+        public Dictionary<string, TaskInfo> taskDict { get; private set; }
 
         //dictionary to store task object and its commence time
         private Dictionary<TaskInfo, int> commenceTimes;
