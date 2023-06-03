@@ -6,46 +6,51 @@ namespace A3_ADT
 {
     public class FileParser
     {
+        //list to store the tasks loaded from the file
         public List<string> ParsedData { get; private set; }
 
         public FileParser(string fileName)
         {
-            string solutionFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
-            string filePath = Path.Combine(solutionFolder, fileName);
+            //setup file path
+            string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+            string filePath = Path.Combine(fileFolder, fileName);
 
             if (!Path.HasExtension(filePath))
             {
                 filePath += ".txt";
             }
 
+            // check if file exists
             if (!File.Exists(filePath))
             {
-                using (StreamWriter fileWriter = File.CreateText(filePath))
-                {
-                    Console.WriteLine($"File '{fileName} created as it did not exist.'");
-                }
+                Console.WriteLine($"File '{fileName}' does not exist.");
+                
             }
-
-            ParsedData = new List<string>();
-
-            string[] fileContent = File.ReadAllLines(filePath);
-
-            for (int i = 0; i < fileContent.Length; i++)
+            else
             {
-                string line = fileContent[i];
+                ParsedData = new List<string>();
 
-                if (ValidateLine(line))
-                {
-                    ParsedData.Add(line);
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid line {i + 1}: {line}. Line skipped.");
-                }
+                //get all file content in an array
+                string[] fileContent = File.ReadAllLines(filePath);
 
-                if (ParsedData.Count == 0)
+                for (int i = 0; i < fileContent.Length; i++)
                 {
-                    Console.WriteLine("The file is empty or invalid.");
+                    string line = fileContent[i];
+
+                    //validate file and task formats
+                    if (ValidateLine(line))
+                    {
+                        ParsedData.Add(line);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Invalid line {i + 1}: {line}. Line skipped.");
+                    }
+
+                    if (ParsedData.Count == 0)
+                    {
+                        Console.WriteLine("The file is empty or invalid.");
+                    }
                 }
             }
         }
