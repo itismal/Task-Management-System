@@ -165,39 +165,48 @@ namespace A3_ADT
             Console.WriteLine("Enter the file name: ");
             string fileName = Console.ReadLine();
 
-            Console.WriteLine();
-            //instantiate FileParser class to load the file
-            FileParser fileParser = new FileParser(fileName);
+            string filePath = Path.Combine(fileFolder, $"{fileName}.txt");
 
-            //check for the task loading
-            if (fileParser.ParsedData.Count > 0)
+            if (File.Exists(filePath))
             {
-                Console.WriteLine("Tasks loaded successfully.");
+                Console.WriteLine();
+                //instantiate FileParser class to load the file
+                FileParser fileParser = new FileParser(fileName);
 
-                //parse all the lines in the file
-                foreach (string line in fileParser.ParsedData)
+                //check for the task loading
+                if (fileParser.ParsedData.Count > 0)
                 {
-                    string[] taskParts = line.Split(',');
-                    string taskID = taskParts[0].Trim();
-                    int timeNeeded = int.Parse(taskParts[1].Trim());
+                    Console.WriteLine("Tasks loaded successfully.");
 
-                    List<string> dependencies = new List<string>();
-
-                    if (taskParts.Length > 2)
+                    //parse all the lines in the file
+                    foreach (string line in fileParser.ParsedData)
                     {
-                        for (int i = 2; i < taskParts.Length; i++)
-                        {
-                            dependencies.Add(taskParts[i].Trim());
-                        }
-                    }
+                        string[] taskParts = line.Split(',');
+                        string taskID = taskParts[0].Trim();
+                        int timeNeeded = int.Parse(taskParts[1].Trim());
 
-                    taskManagement.AddTask(taskID, timeNeeded, dependencies);
+                        List<string> dependencies = new List<string>();
+
+                        if (taskParts.Length > 2)
+                        {
+                            for (int i = 2; i < taskParts.Length; i++)
+                            {
+                                dependencies.Add(taskParts[i].Trim());
+                            }
+                        }
+
+                        taskManagement.AddTask(taskID, timeNeeded, dependencies);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error: The file is empty or invalid.");
                 }
             }
             else
             {
-                Console.WriteLine("Error: The file is empty or invalid.");
-            }
+                Console.WriteLine($"File '{fileName}' does not exist.");
+            }            
         }
 
         private void MenuAdd()

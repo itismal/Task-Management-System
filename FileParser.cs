@@ -20,37 +20,28 @@ namespace A3_ADT
                 filePath += ".txt";
             }
 
-            // check if file exists
-            if (!File.Exists(filePath))
-            {
-                Console.WriteLine($"File '{fileName}' does not exist.");
-                
-            }
-            else
-            {
-                ParsedData = new List<string>();
+            ParsedData = new List<string>();
 
-                //get all file content in an array
-                string[] fileContent = File.ReadAllLines(filePath);
+            //get all file content in an array
+            string[] fileContent = File.ReadAllLines(filePath);
 
-                for (int i = 0; i < fileContent.Length; i++)
+            for (int i = 0; i < fileContent.Length; i++)
+            {
+                string line = fileContent[i];
+
+                //validate file and task formats
+                if (ValidateLine(line))
                 {
-                    string line = fileContent[i];
+                    ParsedData.Add(line);
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid line {i + 1}: {line}. Line skipped.");
+                }
 
-                    //validate file and task formats
-                    if (ValidateLine(line))
-                    {
-                        ParsedData.Add(line);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Invalid line {i + 1}: {line}. Line skipped.");
-                    }
-
-                    if (ParsedData.Count == 0)
-                    {
-                        Console.WriteLine("The file is empty or invalid.");
-                    }
+                if (ParsedData.Count == 0)
+                {
+                    Console.WriteLine("The file is empty or invalid.");
                 }
             }
         }
