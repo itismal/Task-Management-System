@@ -146,51 +146,59 @@ namespace A3_ADT
             //validate if graph is directed acyclic
             if (ValidateData())
             {
-                //clear the dictionaries if previously used for effective memory usage
-                commenceTimes.Clear();
-                isCalculated.Clear();
-                dependencyProcessTimes.Clear();
-
-                //populate the dictionaries
-                foreach (TaskInfo taskInfo in taskDict.Values)
+                //check if dictionary is empty
+                if (taskDict.Count != 0)
                 {
-                    //set default commence time to 0 AND status to false
-                    commenceTimes[taskInfo] = 0;
-                    isCalculated[taskInfo] = false;
+                    //clear the dictionaries if previously used for effective memory usage
+                    commenceTimes.Clear();
+                    isCalculated.Clear();
+                    dependencyProcessTimes.Clear();
 
-                    //add task with dependencies and instantiate its list to store dependencies processing times
-                    if (taskInfo.Dependencies.Count != 0)
-                    {
-                        dependencyProcessTimes[taskInfo] = new List<int>();
-                    }
-                }
-
-                //apply depth first search recursively
-                foreach (TaskInfo task in taskDict.Values)
-                {
-                    RecursiveDFS(task);
-                }
-
-                //display earliest commence times
-                //Console.WriteLine();
-                //foreach (TaskInfo taskInfo in taskDict.Values)
-                //{
-                //    Console.WriteLine($"Task '{taskInfo.TaskID}': {commenceTimes[taskInfo]}");
-                //}
-
-                string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
-                string filePath = Path.Combine(fileFolder, "EarliestTimes.txt");
-
-                using (StreamWriter writer = new StreamWriter(filePath, false))
-                {
+                    //populate the dictionaries
                     foreach (TaskInfo taskInfo in taskDict.Values)
                     {
-                        writer.WriteLine(taskInfo.TaskID + ", " + commenceTimes[taskInfo]);
+                        //set default commence time to 0 AND status to false
+                        commenceTimes[taskInfo] = 0;
+                        isCalculated[taskInfo] = false;
+
+                        //add task with dependencies and instantiate its list to store dependencies processing times
+                        if (taskInfo.Dependencies.Count != 0)
+                        {
+                            dependencyProcessTimes[taskInfo] = new List<int>();
+                        }
                     }
+
+                    //apply depth first search recursively
+                    foreach (TaskInfo task in taskDict.Values)
+                    {
+                        RecursiveDFS(task);
+                    }
+
+                    //display earliest commence times
+                    //Console.WriteLine();
+                    //foreach (TaskInfo taskInfo in taskDict.Values)
+                    //{
+                    //    Console.WriteLine($"Task '{taskInfo.TaskID}': {commenceTimes[taskInfo]}");
+                    //}
+
+                    string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+                    string filePath = Path.Combine(fileFolder, "EarliestTimes.txt");
+
+                    using (StreamWriter writer = new StreamWriter(filePath, false))
+                    {
+                        foreach (TaskInfo taskInfo in taskDict.Values)
+                        {
+                            writer.WriteLine(taskInfo.TaskID + ", " + commenceTimes[taskInfo]);
+                        }
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine("Earliest Commence Times saved to EarliestTimes.txt\n" +
+                        $"Location: {filePath}");
                 }
-                Console.WriteLine();
-                Console.WriteLine("Earliest Commence Times saved to EarliestTimes.txt\n" +
-                    $"Location: {filePath}");
+                else
+                {
+                    Console.WriteLine("No data. Can not calculate earliest commence time.");
+                }
             }
             else
             {
@@ -261,26 +269,35 @@ namespace A3_ADT
 
         public void GetSequence()
         {
+            //validate if graph is directed acyclic
             if (ValidateData())
             {
-                sequence.Clear();
-                CalculateCommenceTimes();
-                CalculateSeqeunce();
-
-                //display seqeunce
-                //Console.WriteLine();
-                //Console.WriteLine("Task Sequence: " + string.Join(", ", sequence));
-
-                string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
-                string filePath = Path.Combine(fileFolder, "Sequence.txt");
-
-                using (StreamWriter writer = new StreamWriter(filePath, false))
+                //check if dictionary is empty
+                if (taskDict.Count != 0)
                 {
-                    writer.WriteLine(string.Join(", ", sequence));
+                    sequence.Clear();
+                    CalculateCommenceTimes();
+                    CalculateSeqeunce();
+
+                    //display seqeunce
+                    //Console.WriteLine();
+                    //Console.WriteLine("Task Sequence: " + string.Join(", ", sequence));
+
+                    string fileFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+                    string filePath = Path.Combine(fileFolder, "Sequence.txt");
+
+                    using (StreamWriter writer = new StreamWriter(filePath, false))
+                    {
+                        writer.WriteLine(string.Join(", ", sequence));
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine("Sequence saved to Sequence.txt\n" +
+                        $"Location: {filePath}");
                 }
-                Console.WriteLine();
-                Console.WriteLine("Sequence saved to Sequence.txt\n" +
-                    $"Location: {filePath}");
+                else
+                {
+                    Console.WriteLine("No data. Can not calculate sequence time.");
+                }
             }
             else
             {
